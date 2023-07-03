@@ -44,7 +44,6 @@ const App = () => {
     const duplicate = arrayValues.filter(
       (item) => item.name === valname && item.context === valcontext
     );
-
     if (duplicate.length) {
       return true;
     }
@@ -52,22 +51,23 @@ const App = () => {
   };
 
   const addUser = () => {
-    if (name.name.trim() === "" && name.context.trim() === "") {
-      setNameError({
-        nam: { message: "Name is required", state: true },
-        con: { message: "Context is required", state: true },
-      });
-    } else if (name.name.trim() === "") {
+    if (name.name.trim() === "") {
+      if (name.context.trim() === "") {
+        setNameError({
+          nam: { message: "Name is required", state: true },
+          con: { message: "Context is required", state: true },
+        });
+      } else {
+        setNameError({
+          nam: { message: "", state: false },
+          con: { message: "Context is required", state: true },
+        });
+      }
       setNameError({
         nam: { message: "Name is required", state: true },
         con: { message: "", state: false },
       });
-    } else if (name.context.trim() === "") {
-      setNameError({
-        nam: { message: "", state: false },
-        con: { message: "Context is required", state: true },
-      });
-    } else if (handleDuplicate(name.name, name.context)) {
+    } else if (handleDuplicate(name.name.trim(), name.context.trim())) {
       setOpen({
         state: true,
         msg: "Name and Context already exists.Try different one.",
